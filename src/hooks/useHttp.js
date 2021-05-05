@@ -1,66 +1,41 @@
 import axios from "axios";
 import { useReducer, useCallback } from "react";
 
+/// API base URL
 const BASE_URL = "https://cat-or-not-2d93d-default-rtdb.firebaseio.com";
 
-const api = {
-  postPhotos: "POSTPHOTOS",
-  patchPhotos: "PATCHPHOTOS",
-};
+/// API Methods
+export const postPhoto = async photo => {
+  let formData = new FormData();
+  formData.append("photo", photo, photo.file.name);
 
-const getRequestFunction = apiType => {
-  switch (apiType) {
-    case api.postPhotos:
-      async function postPhoto(photo) {
-        const requestConfig = {
-          method: "post",
-          url: `${BASE_URL}/photos.json`,
-          headers: {
-            "Content-Type": "application/json",
-          },
-          data: {
-            photo: photo,
-          },
-        };
-        const response = await axios.request(requestConfig);
-        if (response.statusText !== "OK") {
-          throw new Error(response.statusText || "Could not validate photo.");
-        }
-        return null;
-      }
-      return postPhoto;
-      break;
-    case api.patchPhotos:
-      async function patchPhotos(photos) {
-        const requestConfig = {
-          method: "patch",
-          url: `${BASE_URL}/photos.json`,
-          headers: {
-            "Content-Type": "application/json",
-          },
-          data: {
-            photo: photos,
-          },
-        };
-        const response = await axios.request(requestConfig);
-        if (response.statusText !== "OK") {
-          throw new Error(response.statusText || "Could not validate photo.");
-        }
-        return null;
-      }
-      return patchPhotos;
-      break;
+  // prepare request Configeration
+  const requestConfig = {
+    method: "post",
+    url: `${BASE_URL}/photos`,
+    headers: {
+      "content-type": "multipart/form-data",
+    },
+    data: {
+      formData,
+    },
+  };
+  const response = await axios.request(requestConfig);
+  console.log(response);
+  if (response.statusText !== "OK") {
+    throw new Error(response.statusText || "Could not validate photo.");
   }
+  return null;
 };
 
-export const patchPhotos = getRequestFunction(api.patchPhotos);
-export const postPhoto = getRequestFunction(api.postPhotos);
-
+//define action types as enum to eliminate typos
 const actionTypes = {
   send: "SEND",
   success: "SUCCESS",
   error: "ERROR",
 };
+
+// reducer method
 const httpReducer = (state, action) => {
   switch (action.type) {
     case actionTypes.send:
@@ -90,7 +65,7 @@ const httpReducer = (state, action) => {
   }
 };
 
-function useHttp(requestfunction, startWithPending = false) {
+function useHttp(requestfn, startWithPending = false) {
   const [httpState, dispatch] = useReducer(httpReducer, {
     status: startWithPending ? "pending" : null,
     data: null,
@@ -101,9 +76,11 @@ function useHttp(requestfunction, startWithPending = false) {
     async requestData => {
       dispatch({ type: actionTypes.send });
       try {
-        const responseData = await requestfunction(requestData);
+        const responseData = await postPhoto(requestData);
+        console.log(responseData);
         dispatch({ type: actionTypes.success, responseData });
       } catch (error) {
+        // hamdling errors Types
         if (error.response) {
           dispatch({
             type: actionTypes.error,
@@ -124,7 +101,7 @@ function useHttp(requestfunction, startWithPending = false) {
         }
       }
     },
-    [requestfunction]
+    [requestfn]
   );
   return {
     sendRequest,

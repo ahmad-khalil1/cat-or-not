@@ -1,5 +1,6 @@
-import { Card, makeStyles } from "@material-ui/core";
+import { makeStyles } from "@material-ui/core";
 
+// Layout Styles
 const useStyle = makeStyles({
   layoutRoot: {
     margin: "3rem auto",
@@ -8,6 +9,7 @@ const useStyle = makeStyles({
     textAlign: "center",
   },
 });
+
 const Layout = props => {
   const classes = useStyle();
   return (

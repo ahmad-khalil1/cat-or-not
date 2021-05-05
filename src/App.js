@@ -1,6 +1,5 @@
 import { Card, makeStyles, Typography, CssBaseline } from "@material-ui/core";
 import DropZone from "./components/DropZone";
-
 import Layout from "./components/layout/Layout";
 
 const useStyle = makeStyles(theme => {
@@ -10,12 +9,7 @@ const useStyle = makeStyles(theme => {
       padding: "2rem",
       borderRadius: "12px",
       textAlign: "center",
-      // width: "90%",
-      // maxWidth: "40rem",
     },
-    // app: {
-    //   backgroundColor: theme.palette.background.default,
-    // },
   };
 });
 
@@ -24,7 +18,6 @@ function App() {
   return (
     <Layout>
       <CssBaseline />
-
       <Card elevation={0} className={classes.cardRoot}>
         <Typography
           color='primary'
@@ -32,7 +25,7 @@ function App() {
           gutterBottom={true}
           align='center'
         >
-          cat or not
+          Cat or not
         </Typography>
         <DropZone />
       </Card>
