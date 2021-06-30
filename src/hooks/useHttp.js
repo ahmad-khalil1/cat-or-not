@@ -36,6 +36,7 @@ const actionTypes = {
   error: "ERROR",
 };
 //test
+//test2
 // reducer method
 const httpReducer = (state, action) => {
   switch (action.type) {
