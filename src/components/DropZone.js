@@ -46,7 +46,8 @@ const DropZone = () => {
   const handleAddingFiles = newFileObjs => {
     console.log("onAdd", newFileObjs);
     setIntialState(false);
-    setFileObjects([].concat(fileObjects, newFileObjs));
+    //setFileObjects([].concat(fileObjects, newFileObjs));
+    setFileObjects([].concat(newFileObjs));
   };
 
   const handleDeletingFiles = deleteFileObj => {

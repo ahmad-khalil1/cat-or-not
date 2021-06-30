@@ -15,6 +15,7 @@ export const postPhoto = async photo => {
     url: `${BASE_URL}/photos`,
     headers: {
       "content-type": "multipart/form-data",
+      "": "",
     },
     data: {
       formData,
@@ -34,7 +35,7 @@ const actionTypes = {
   success: "SUCCESS",
   error: "ERROR",
 };
-
+//test
 // reducer method
 const httpReducer = (state, action) => {
   switch (action.type) {
